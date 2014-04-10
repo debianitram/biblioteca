@@ -23,3 +23,28 @@ auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
 
+# Definicion de tablas
+
+Contenedor = db.define_tables('contenedor',
+				Field('noombre'),
+				Field('descripcion', 'text'),
+				Field('contenedor_superior', 'reference contenedor'),
+				Field('es_contenedor', 'boolean'),
+				auth.signature,
+				format='%(nombre)s'
+			)
+
+Libro = db.define_tables('libro',
+			Field('titulo'),
+			Field('descripcion'),
+			Field('isbn'),
+			Field('autor'),
+			Field('editorial'),
+			Field('fecha_publicacion', 'date'),
+			Field('ubicacion', 'reference contenedor'),
+			Field('cantidad_total', 'integer'),
+			Field('cantidad_prestados', 'integer'),
+			Field('cantidad_disponible'),
+			auth.signature,
+			format='%(titulo)s'
+			)
