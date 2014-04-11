@@ -25,7 +25,7 @@ auth.settings.reset_password_requires_verification = True
 
 # Definicion de tablas
 
-Contenedor = db.define_tables('contenedor',
+Contenedor = db.define_table('contenedor',
 				Field('noombre'),
 				Field('descripcion', 'text'),
 				Field('contenedor_superior', 'reference contenedor'),
@@ -34,7 +34,7 @@ Contenedor = db.define_tables('contenedor',
 				format='%(nombre)s'
 			)
 
-Libro = db.define_tables('libro',
+Libro = db.define_table('libro',
 			Field('titulo'),
 			Field('descripcion'),
 			Field('isbn'),
