@@ -1,6 +1,7 @@
 # Controlador que se encarga de manejar la lógica de los libros
 def index():
-    return dict()
+    redirect(URL(c='libros', f='administrar'))
+    
 
 
 def administrar():
@@ -9,7 +10,8 @@ def administrar():
 
     grid = SQLFORM.grid(query,
                         csv=False,
-                        orderby=Libro.create_on)
+                        orderby=Libro.created_on,
+                        user_signature=False)
 
     return dict(grid=grid)
 
