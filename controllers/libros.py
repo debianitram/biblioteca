@@ -18,3 +18,7 @@ def administrar():
 
 def prestar():
     return 'Lógica para el prestamo de libros'
+
+
+def devolver():
+    return 'Lógica para devolver los libros'

@@ -10,3 +10,8 @@ if etapa_desarrollo:
                                          last_name='desarrollo',
                                          email='test@test.com',
                                          password='123qwe')
+
+
+def getContainerUp(key):
+    name = Contenedor(key)['nombre']
+    return name

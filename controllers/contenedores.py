@@ -6,13 +6,23 @@ def administrar():
 
     tipo = request.vars.get('tipo', 'contenedor')
 
-    # Armamos la consulta según sea un Contenedor o una Sección.
+    # Armamos la consulta según sea: Contenedor o Sección.
+    # Colocamos los Fields según sea: Contenedor o Sección.
     query = Contenedor.is_active != False
     if tipo == 'contenedor':
+        titulo = 'Contenedor'
         query &= Contenedor.es_contenedor == True
+        fields = [Contenedor.nombre, 
+                  Contenedor.descripcion]
 
     elif tipo == 'seccion':
+        titulo = 'Sección'
         query &= Contenedor.es_contenedor == False
+        fields = [Contenedor.nombre, 
+                  Contenedor.descripcion,
+                  Contenedor.contenedor_superior]
+        Contenedor.contenedor_superior.represent = lambda v, r: getContainerUp(v)
+
     else:
         session.flash = 'No encontró la URL'
         redirect(URL(c='default', f='index'))
@@ -28,16 +38,24 @@ def administrar():
             Contenedor.es_contenedor.writable = False
 
         elif tipo == 'seccion':
+            Q = Contenedor.is_active == True
+            Q &= Contenedor.es_contenedor == True
             Contenedor.es_contenedor.default = False
             Contenedor.es_contenedor.readable = False
             Contenedor.es_contenedor.writable = False
+            Contenedor.contenedor_superior.requires = IS_IN_DB(db(Q),
+                                                               Contenedor.id,
+                                                               '%(nombre)s')
 
+    # fin de la configuración de Fields.
 
     grid = SQLFORM.grid(query, 
+                        fields=fields,
                         csv=False,
-                        orderby=Contenedor.created_on)
+                        orderby=Contenedor.created_on,
+                        user_signature=True)
 
-    return dict(grid=grid)
+    return dict(titulo=titulo, grid=grid)
 
 
 

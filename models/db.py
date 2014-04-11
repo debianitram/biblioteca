@@ -34,6 +34,7 @@ Contenedor = db.define_table('contenedor',
 				format='%(nombre)s'
 			)
 
+
 Libro = db.define_table('libro',
 			Field('titulo'),
 			Field('descripcion'),
@@ -42,12 +43,18 @@ Libro = db.define_table('libro',
 			Field('editorial'),
 			Field('fecha_publicacion', 'date'),
 			Field('ubicacion', 'reference contenedor'),
+			Field('codsearch', 
+				   compute=lambda r: '%s %s %s' % (r['titulo'], 
+				   								   r['autor'],
+				   								   r['editorial'])
+				),
 			Field('cantidad_total', 'integer'),
 			Field('cantidad_prestados', 'integer'),
 			Field('cantidad_disponible'),
 			auth.signature,
 			format='%(titulo)s'
 			)
+
 
 tipos = ['Alumno', 'Docente', 'No Docente']
 Persona = db.define_table('persona',
@@ -63,7 +70,8 @@ Persona = db.define_table('persona',
 			format='%(nombre)s'
 			)
 
-estados = ['Estado1', 'Estado2', 'Estado3']
+
+estados = {'1': 'prestado', '2': 'devuelto'}
 Movimientos = db.define_table('movimientos',
 			Field('libro_id', 'reference libro'),
 			Field('persona_id', 'reference persona'),

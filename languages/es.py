@@ -28,11 +28,8 @@
 'About application': 'Acerca de la aplicación',
 'Access Control': 'Control de Acceso',
 'Add': 'Añadir',
-<<<<<<< HEAD
-=======
 'Add Record': 'Add Record',
 'Add record to database': 'Add record to database',
->>>>>>> 677807e06e49bb0fa081ab49d01a159e55132f4e
 'Add this to the search as an AND term': 'Add this to the search as an AND term',
 'Add this to the search as an OR term': 'Add this to the search as an OR term',
 'additional code for your application': 'código adicional para su aplicación',
@@ -280,10 +277,7 @@
 'NO': 'NO',
 'No databases in this application': 'No hay bases de datos en esta aplicación',
 'No records found': 'No se han encontrado registros',
-<<<<<<< HEAD
 'Nombre': 'Nombre',
-=======
->>>>>>> 677807e06e49bb0fa081ab49d01a159e55132f4e
 'None': 'None',
 'Not authorized': 'No autorizado',
 'not in': 'no en',
