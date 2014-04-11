@@ -26,7 +26,7 @@ auth.settings.reset_password_requires_verification = True
 # Definicion de tablas
 
 Contenedor = db.define_table('contenedor',
-				Field('noombre'),
+				Field('nombre'),
 				Field('descripcion', 'text'),
 				Field('contenedor_superior', 'reference contenedor'),
 				Field('es_contenedor', 'boolean'),

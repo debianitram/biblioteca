@@ -6,14 +6,12 @@ def administrar():
 
     tipo = request.vars.get('tipo', 'contenedor')
 
+    query = Contenedor.is_active != False
     if tipo == 'contenedor':
-        query = Contenedor.es_contenedor == True
-        query &= Contenedor.is_active != False
+        query &= Contenedor.es_contenedor == True
         
-    
     elif tipo == 'seccion':
-        query = Contenedor.es_contenedor == False
-        query &= Contenedor.is_active != False
+        query &= Contenedor.es_contenedor == False
 
 
     grid = SQLFORM.grid(query, 
