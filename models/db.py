@@ -26,21 +26,12 @@ auth.settings.reset_password_requires_verification = True
 # Definicion de tablas
 
 Contenedor = db.define_table('contenedor',
-<<<<<<< HEAD
-			Field('nombre'),
-			Field('descripcion', 'text'),
-			Field('contenedor_superior', 'reference contenedor'),
-			Field('es_contenedor', 'boolean'),
-			auth.signature,
-			format='%(nombre)s'
-=======
 				Field('nombre'),
 				Field('descripcion', 'text'),
 				Field('contenedor_superior', 'reference contenedor'),
 				Field('es_contenedor', 'boolean'),
 				auth.signature,
 				format='%(nombre)s'
->>>>>>> 677807e06e49bb0fa081ab49d01a159e55132f4e
 			)
 
 Libro = db.define_table('libro',
