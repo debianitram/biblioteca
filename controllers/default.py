@@ -2,7 +2,13 @@
 
 def index():
     response.flash = 'Vista para libros prestados'
-    return dict()
+    grid = SQLFORM.grid(Movimientos,
+                                    deletable=False,
+                                    editable=False,
+                                    create=False,
+                                    csv=False,
+                                    orderby=Movimientos.created_on)
+    return dict(grid=grid)
 
 
 def user():
