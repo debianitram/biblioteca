@@ -26,12 +26,12 @@ auth.settings.reset_password_requires_verification = True
 # Definicion de tablas
 
 Contenedor = db.define_table('contenedor',
-				Field('noombre'),
-				Field('descripcion', 'text'),
-				Field('contenedor_superior', 'reference contenedor'),
-				Field('es_contenedor', 'boolean'),
-				auth.signature,
-				format='%(nombre)s'
+			Field('nombre'),
+			Field('descripcion', 'text'),
+			Field('contenedor_superior', 'reference contenedor'),
+			Field('es_contenedor', 'boolean'),
+			auth.signature,
+			format='%(nombre)s'
 			)
 
 Libro = db.define_table('libro',
@@ -47,4 +47,27 @@ Libro = db.define_table('libro',
 			Field('cantidad_disponible'),
 			auth.signature,
 			format='%(titulo)s'
+			)
+
+tipos = ['Alumno', 'Docente', 'No Docente']
+Persona = db.define_table('persona',
+			Field('nombre'),
+			Field('apellido'),
+			Field('dni', 'integer'),
+			Field('domicilio'),
+			Field('email'),
+			Field('tipo', 'list:string', requires=IS_IN_SET(tipos)),
+			Field('telefono', 'integer'),
+			Field('curso'),
+			auth.signature,
+			format='%(nombre)s'
+			)
+
+estados = ['Estado1', 'Estado2', 'Estado3']
+Movimientos = db.define_table('movimientos',
+			Field('libro_id', 'reference libro'),
+			Field('persona_id', 'reference persona'),
+			Field('cantidad', 'integer'),
+			Field('estado', 'list:string', requires=IS_IN_SET(estados)),
+			auth.signature,
 			)
