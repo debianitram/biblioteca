@@ -33,14 +33,10 @@ def administrar():
             Contenedor.contenedor_superior.readable = False
             Contenedor.contenedor_superior.writable = False
             Contenedor.es_contenedor.default = True
-            Contenedor.es_contenedor.readable = False
-            Contenedor.es_contenedor.writable = False
 
         elif tipo == 'seccion':
             Q = Contenedor.es_contenedor == True
             Contenedor.es_contenedor.default = False
-            Contenedor.es_contenedor.readable = False
-            Contenedor.es_contenedor.writable = False
             Contenedor.contenedor_superior.requires = IS_IN_DB(db(Q),
                                                                Contenedor.id,
                                                                '%(nombre)s')

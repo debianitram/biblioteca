@@ -24,7 +24,6 @@ auth.settings.reset_password_requires_verification = True
 
 
 # Definicion de tablas
-
 Contenedor = db.define_table('contenedor',
 				Field('nombre'),
 				Field('descripcion', 'text'),
@@ -58,14 +57,13 @@ Libro = db.define_table('libro',
 			)
 
 
-tipos = ['Alumno', 'Docente', 'No Docente']
 Persona = db.define_table('persona',
 			Field('nombre'),
 			Field('apellido'),
-			Field('dni', 'integer'),
+			Field('dni', 'integer', unique=True),
 			Field('domicilio'),
 			Field('email'),
-			Field('tipo', 'list:string', requires=IS_IN_SET(tipos)),
+			Field('tipo', 'list:string'),
 			Field('telefono', 'integer'),
 			Field('curso'),
 			Field('codsearch',
@@ -75,25 +73,15 @@ Persona = db.define_table('persona',
 				),
 			auth.signature,
 			common_filter=lambda q: db['persona'].is_active == True,
-			format='%(nombre)s'
+			format='%(apellido)s, %(nombre)s'
 			)
 
 
-estados = {'1': 'PRESTADO', '2': 'DEVUELTO'}
 Movimientos = db.define_table('movimientos',
 			Field('libro_id', 'reference libro'),
 			Field('persona_id', 'reference persona'),
 			Field('cantidad', 'integer'),
-			Field('estado', 'list:string', requires=IS_IN_SET(estados)),
+			Field('estado', 'list:string'),
 			auth.signature,
 			common_filter=lambda q: db['movimientos'].is_active == True,
 			)
-
-
-### Requires.
-# Contenedor:
-Contenedor.nombre.requires = IS_NOT_EMPTY()
-
-# Libro
-Libro.titulo.requires = IS_NOT_EMPTY()
-# Libro.isbn.requires = IS_EMPTY_OR(IS_NOT_IN_DB(db, Libro))
