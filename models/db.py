@@ -31,13 +31,14 @@ Contenedor = db.define_table('contenedor',
 				Field('contenedor_superior', 'reference contenedor'),
 				Field('es_contenedor', 'boolean'),
 				auth.signature,
+				common_filter=lambda q: db['contenedor'].is_active == True,
 				format='%(nombre)s'
 			)
 
 
 Libro = db.define_table('libro',
 			Field('titulo'),
-			Field('descripcion'),
+			Field('descripcion', 'text'),
 			Field('isbn'),
 			Field('autor'),
 			Field('editorial'),
@@ -52,6 +53,7 @@ Libro = db.define_table('libro',
 			Field('cantidad_prestados', 'integer'),
 			Field('cantidad_disponible'),
 			auth.signature,
+			common_filter=lambda q: db['libro'].is_active == True,
 			format='%(titulo)s'
 			)
 
@@ -66,16 +68,32 @@ Persona = db.define_table('persona',
 			Field('tipo', 'list:string', requires=IS_IN_SET(tipos)),
 			Field('telefono', 'integer'),
 			Field('curso'),
+			Field('codsearch',
+				   compute=lambda r: '%s %s %s' % (r['nombre'], 
+				   								   r['apellido'],
+				   								   r['dni'])
+				),
 			auth.signature,
+			common_filter=lambda q: db['persona'].is_active == True,
 			format='%(nombre)s'
 			)
 
 
-estados = {'1': 'prestado', '2': 'devuelto'}
+estados = {'1': 'PRESTADO', '2': 'DEVUELTO'}
 Movimientos = db.define_table('movimientos',
 			Field('libro_id', 'reference libro'),
 			Field('persona_id', 'reference persona'),
 			Field('cantidad', 'integer'),
 			Field('estado', 'list:string', requires=IS_IN_SET(estados)),
 			auth.signature,
+			common_filter=lambda q: db['movimientos'].is_active == True,
 			)
+
+
+### Requires.
+# Contenedor:
+Contenedor.nombre.requires = IS_NOT_EMPTY()
+
+# Libro
+Libro.titulo.requires = IS_NOT_EMPTY()
+# Libro.isbn.requires = IS_EMPTY_OR(IS_NOT_IN_DB(db, Libro))

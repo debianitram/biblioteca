@@ -8,16 +8,15 @@ def administrar():
 
     # Armamos la consulta según sea: Contenedor o Sección.
     # Colocamos los Fields según sea: Contenedor o Sección.
-    query = Contenedor.is_active != False
     if tipo == 'contenedor':
         titulo = 'Contenedor'
-        query &= Contenedor.es_contenedor == True
+        query = Contenedor.es_contenedor == True
         fields = [Contenedor.nombre, 
                   Contenedor.descripcion]
 
     elif tipo == 'seccion':
         titulo = 'Sección'
-        query &= Contenedor.es_contenedor == False
+        query = Contenedor.es_contenedor == False
         fields = [Contenedor.nombre, 
                   Contenedor.descripcion,
                   Contenedor.contenedor_superior]
@@ -38,8 +37,7 @@ def administrar():
             Contenedor.es_contenedor.writable = False
 
         elif tipo == 'seccion':
-            Q = Contenedor.is_active == True
-            Q &= Contenedor.es_contenedor == True
+            Q = Contenedor.es_contenedor == True
             Contenedor.es_contenedor.default = False
             Contenedor.es_contenedor.readable = False
             Contenedor.es_contenedor.writable = False
