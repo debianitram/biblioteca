@@ -15,3 +15,14 @@ if etapa_desarrollo:
 def getContainerUp(key):
     name = Contenedor(key)['nombre']
     return name
+
+
+def str_libro_ubicacion(contenedor_id):
+    r = Contenedor(contenedor_id)
+    if r.es_contenedor:
+        msg = SPAN('%s' % r.nombre, _class='label label-inverse')
+    else:
+        msg = TAG[''](SPAN('%s' % r.nombre, _class='label label-info'), ' ',
+                      SPAN('%s' % r.contenedor_superior.nombre, 
+                           _class='label label-inverse'))
+    return msg

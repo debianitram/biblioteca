@@ -3,13 +3,18 @@ def index():
     redirect(URL(c='libros', f='administrar'))
     
 
-
 def administrar():
     """ Administración de los libros en la biblioteca - CRUD """
+    response.view = 'biblioteca/libros_administrar.html'  # File view
     query = Libro.is_active == True
+
+    # Fields a mostrar en la grilla.
+    fields = [Libro.titulo, Libro.autor, Libro.ubicacion, Libro.cantidad_disponible]
 
     grid = SQLFORM.grid(query,
                         csv=False,
+                        fields=fields,
+                        maxtextlength=45,
                         orderby=Libro.created_on,
                         user_signature=False)
 

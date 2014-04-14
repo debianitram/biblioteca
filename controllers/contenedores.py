@@ -2,8 +2,8 @@
 # Tipo de contenedores: Contenedor/Sección
 
 def administrar():
-    # Grid para administrar los Contenedores/Secciones.
-
+    """ Administración de los contenedores/secciones - CRUD """
+    response.view = 'biblioteca/contenedores_administrar.html'
     tipo = request.vars.get('tipo', 'contenedor')
 
     # Armamos la consulta según sea: Contenedor o Sección.
@@ -20,6 +20,8 @@ def administrar():
         fields = [Contenedor.nombre, 
                   Contenedor.descripcion,
                   Contenedor.contenedor_superior]
+        Contenedor.contenedor_superior.readable = True
+        Contenedor.contenedor_superior.writable = True
         Contenedor.contenedor_superior.represent = lambda v, r: getContainerUp(v)
 
     else:
@@ -30,8 +32,6 @@ def administrar():
     # Reconfiguramos los Fields.
     if 'new' in request.args or 'edit' in request.args:
         if tipo == 'contenedor':
-            Contenedor.contenedor_superior.readable = False
-            Contenedor.contenedor_superior.writable = False
             Contenedor.es_contenedor.default = True
 
         elif tipo == 'seccion':
