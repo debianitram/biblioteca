@@ -5,7 +5,7 @@
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
-response.logo = A(B('Biblioteca :'),
+response.logo = A(B('{ Biblioteca }'),
                   _class="brand",_href="http://colmenalabs.com.ar/")
 response.title = 'Biblioteca'.title()
 response.subtitle = ''

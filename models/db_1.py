@@ -36,6 +36,10 @@ Contenedor.contenedor_superior.writable = False
 Libro.cantidad_prestados.readable = False
 Libro.cantidad_prestados.writable = False
 Libro.codsearch.readable = False
+
+# Persona
+Persona.codsearch.readable = False
+Persona.codsearch.writable = False
 ### End Readable And Writables
 
 

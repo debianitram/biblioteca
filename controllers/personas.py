@@ -6,13 +6,17 @@ def index():
 
 
 def administrar():
-    # Grid para realizar el crud de las personas.
+    """ Administración de las personas - CRUD """
+    response.view = 'biblioteca/personas_administrar.html'
     query = Persona.is_active == True
+    fields = [Persona.nombre, Persona.apellido, Persona.dni, Persona.tipo]
 
     grid = SQLFORM.grid(query,
+                        fields=fields,
+                        maxtextlength=45,
                         csv=False,
                         orderby=Persona.created_on,
                         )
-    return dict()
+    return dict(grid=grid)
 
 

@@ -13,6 +13,9 @@ if etapa_desarrollo:
 
 
 def getContainerUp(key):
+    """ Retornar el nombre del Contenedor Superior.
+        key = id del contenedor superior 
+    """
     name = Contenedor(key)['nombre']
     return name
 
@@ -26,3 +29,13 @@ def str_libro_ubicacion(contenedor_id):
                       SPAN('%s' % r.contenedor_superior.nombre, 
                            _class='label label-inverse'))
     return msg
+
+
+def oncreate(table, id):
+    response.flash = (table, id)
+    return
+
+
+def ondelete(table, id):
+    pass
+
