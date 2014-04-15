@@ -44,6 +44,16 @@ def prestar_libro(row):
                 _class='btn')
     return btn
 
+def devolver_libro(row):
+    """ Se muestra el botón Devolver en SQLFORM.grid
+         """
+
+    btn = A(I(_class='icon-thumbs-up'), 
+            ' Devolver',
+            _href=URL(c='libros', f='devolver', vars=dict(id=row.id)),
+            _class='btn')
+    return btn
+
 def oncreate(table, id):
     response.flash = (table, id)
     return

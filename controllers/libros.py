@@ -25,10 +25,6 @@ def administrar():
                         links=[lambda r: prestar_libro(r)],
                         user_signature=False)
 
-    # Cambiando la clase para el botón submit.
-    if grid.element('input', _type='submit'):
-        grid.element('input', _type='submit')['_class'] = 'btn btn-primary'
-
     return dict(grid=grid)
 
 
@@ -49,7 +45,8 @@ def prestar():
 
     if form.accepts(request.vars, session):
         # Lógica valores en la Base de datos
-        libro.update_record(cantidad_prestados=int(form.vars.cantidad))
+        cantidad_prestados=int(libro.cantidad_prestados)+int(form.vars.cantidad)
+        libro.update_record(cantidad_prestados=cantidad_prestados)
         
         Movimientos.insert(libro_id=libro.id,
                            persona_id=form.vars.persona,
@@ -67,18 +64,36 @@ def prestar():
 def devolver():
 
     movimiento = Movimientos(request.vars.id)
-    
+    libro = Libro(movimiento.libro_id)
+
     form = SQLFORM.factory(
             Field('libro_id', default=movimiento.libro_id),
             Field('persona_id', default=movimiento.persona_id),
-            Field('cantidad', default=movimiento.cantidad),
-            Field('estado', default=movimiento.estado),
-            )       
+            Field('cantidad',
+                    'list:string',
+                    requires=IS_IN_SET(range(1, movimiento.cantidad + 1)),
+                    label='Cantidad a Devolver'),
+            )
+
     if form.process().accepted:
-        Movimientos.insert(libro_id=form.vars.libro_id,
-                            persona_id=form.vars.persona_id,
-                            cantidad=form.vars.cantidad,
-                            estado=form.vars.estado)
-        session.flash='registro insertado'
+        if int(movimiento.cantidad) == int(form.vars.cantidad):
+            # Devolucion Total.
+            #Aqui hace el update en la tabla libros mas la sumatoria de cantidad_prestados
+            cantidad_prestados=int(libro.cantidad_prestados)-int(form.vars.cantidad)
+            libro.update_record(cantidad_prestados=cantidad_prestados)
+            movimiento.update_record(cantidad=0, estado=2)
+            db.commit()
+            session.flash='Se devolvió con exito el total de los libros prestados.'
+            redirect(URL('default', 'index'))
+        else:
+            # Devolucion Parcial
+            cantidad_prestados=int(libro.cantidad_prestados)-int(form.vars.cantidad)
+            libro.update_record(cantidad_prestados=cantidad_prestados)
+            # Hace el update de la tabla movimiento.
+            cantidad=int(movimiento.cantidad)-int(form.vars.cantidad)
+            movimiento.update_record(cantidad=cantidad)
+            db.commit()
+            session.flash='Se devolvió el libro con exito.'
+            redirect(URL('default', 'index'))
 
     return dict(form=form)
