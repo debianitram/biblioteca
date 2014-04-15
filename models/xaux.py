@@ -31,6 +31,18 @@ def str_libro_ubicacion(contenedor_id):
     return msg
 
 
+def prestar_libro(row):
+    """ Se muestra el botón Prestar en SQLFORM.grid
+        si el libro se encuentra disponible """
+
+    if not row.cantidad_disponible:
+        btn = A('No Disponible', _class='btn disabled')
+    else:
+        btn = A(I(_class='icon-thumbs-up'), 
+                ' Prestar',
+                _href=URL(c='libros', f='prestar', vars=dict(libro_id=row.id)),
+                _class='btn')
+    return btn
 
 def oncreate(table, id):
     response.flash = (table, id)

@@ -1,0 +1,28 @@
+{{extend 'layout.html'}}
+
+<div class="well">
+    <div class="page-header" id='inscripcion'>
+        <h1>Prestar Libro</h1>
+    </div>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Título:</th>
+                <td><strong>{{=libro.titulo}}</strong></td>
+            </tr>
+            <tr>
+                <th>Editorial:</th>
+                <td>{{=libro.editorial}}</td>
+            </tr>
+            <tr>
+                <th>Ubicación:</th>
+                <td>{{=libro.ubicacion.nombre}} en
+                    [{{=libro.ubicacion.contenedor_superior.nombre}}]</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{=form}}
+    
+</div>
