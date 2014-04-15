@@ -31,6 +31,7 @@ def str_libro_ubicacion(contenedor_id):
     return msg
 
 
+
 def oncreate(table, id):
     response.flash = (table, id)
     return

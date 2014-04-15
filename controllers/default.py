@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
 
 def index():
-    response.flash = 'Vista para libros prestados'
-    response.view = 'biblioteca/index.html'  # File view
+    if not session.inicio_sesion:
+        response.flash = 'Bienvenido al Sistema Gestión de Biblioteca'
+        session.inicio_sesion = True    
+    
     fields = [Movimientos.libro_id,
-                Movimientos.persona_id,
-                Movimientos.cantidad,
-                Movimientos.estado,
-                Movimientos.created_on]
+              Movimientos.persona_id,
+              Movimientos.cantidad,
+              Movimientos.estado,
+              Movimientos.created_on]
+
     grid = SQLFORM.grid(Movimientos,
+                        fields=fields,
                         deletable=False,
                         editable=False,
                         create=False,
                         csv=False,
-                        orderby=~Movimientos.created_on,
-                        fields=fields)
+                        orderby=~Movimientos.created_on)
     return dict(grid=grid)
 
 

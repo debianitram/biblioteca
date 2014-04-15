@@ -20,6 +20,11 @@ def administrar():
                         orderby=Libro.created_on,
                         ondelete=ondelete,
                         user_signature=False)
+
+    # Cambiando la clase para el botón submit.
+    if grid.element('input', _type='submit'):
+        grid.element('input', _type='submit')['_class'] = 'btn btn-primary'
+        
     return dict(grid=grid)
 
 

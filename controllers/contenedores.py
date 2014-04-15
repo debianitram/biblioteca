@@ -55,6 +55,10 @@ def administrar():
                         deletable=False,
                         user_signature=True)
 
+    # Cambiando la clase para el botón submit.
+    if grid.element('input', _type='submit'):
+        grid.element('input', _type='submit')['_class'] = 'btn btn-primary'
+
     return dict(titulo=titulo, grid=grid)
 
 
