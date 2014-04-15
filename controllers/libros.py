@@ -24,12 +24,21 @@ def administrar():
     # Cambiando la clase para el botón submit.
     if grid.element('input', _type='submit'):
         grid.element('input', _type='submit')['_class'] = 'btn btn-primary'
-        
+
     return dict(grid=grid)
 
 
 def prestar():
-    return 'Lógica para el prestamo de libros'
+    # from modal_FieldsReference import modalFieldsReference as modal
+
+    libro = Libro(request.vars.libro_id) or redirect(URL(c='libros', f='administrar'))
+    
+    form = SQLFORM.factory(
+            Field('libro', Libro, default=libro.titulo.upper(), writable=False),
+            Field('persona', 'reference persona'),
+            )
+
+    return dict(form=form)
 
 
 def devolver():
