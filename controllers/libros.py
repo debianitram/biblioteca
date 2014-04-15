@@ -42,4 +42,20 @@ def prestar():
 
 
 def devolver():
-    return 'Lógica para devolver los libros'
+
+    movimiento = Movimientos(request.vars.id)
+    
+    form = SQLFORM.factory(
+            Field('libro_id', default=movimiento.libro_id),
+            Field('persona_id', default=movimiento.persona_id),
+            Field('cantidad', default=movimiento.cantidad),
+            Field('estado', default=movimiento.estado),
+            )       
+    if form.process().accepted:
+        Movimientos.insert(libro_id=form.vars.libro_id,
+                            persona_id=form.vars.persona_id,
+                            cantidad=form.vars.cantidad,
+                            estado=form.vars.estado)
+        session.flash='registro insertado'
+
+    return dict(form=form)
