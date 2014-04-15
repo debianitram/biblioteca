@@ -37,5 +37,9 @@ def oncreate(table, id):
 
 
 def ondelete(table, id):
-    pass
+    db[table](id).update_record(is_active=False) # Desactivamos el registro
+    db.commit() # Commit
+    session.flash = 'Se eliminó el registro con id: %s' % id # Mensaje
+    redirect(URL())
+
 

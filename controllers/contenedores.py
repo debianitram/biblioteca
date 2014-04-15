@@ -43,10 +43,16 @@ def administrar():
 
     # fin de la configuración de Fields.
 
+    # maxtextlengths
+    maxtextlengths = {str(Contenedor.nombre): 20,
+                      str(Contenedor.contenedor_superior): 50}
+
     grid = SQLFORM.grid(query, 
                         fields=fields,
                         csv=False,
                         orderby=Contenedor.created_on,
+                        maxtextlengths=maxtextlengths,
+                        deletable=False,
                         user_signature=True)
 
     return dict(titulo=titulo, grid=grid)

@@ -16,6 +16,7 @@ def administrar():
                         maxtextlength=45,
                         csv=False,
                         orderby=Persona.created_on,
+                        ondelete=ondelete
                         )
     return dict(grid=grid)
 

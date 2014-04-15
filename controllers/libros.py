@@ -16,6 +16,7 @@ def administrar():
                         fields=fields,
                         maxtextlength=45,
                         orderby=Libro.created_on,
+                        ondelete=ondelete,
                         user_signature=False)
 
     return dict(grid=grid)

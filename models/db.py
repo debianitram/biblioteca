@@ -30,7 +30,7 @@ Contenedor = db.define_table('contenedor',
 				Field('contenedor_superior', 'reference contenedor'),
 				Field('es_contenedor', 'boolean'),
 				auth.signature,
-				common_filter=lambda q: db['contenedor'].is_active == True,
+				# common_filter=lambda q: db['contenedor'].is_active == True,
 				format='%(nombre)s'
 			)
 
