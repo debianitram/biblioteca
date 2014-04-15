@@ -8,6 +8,8 @@ def administrar():
     response.view = 'biblioteca/libros_administrar.html'  # File view
     query = Libro.is_active == True
 
+    #prestar.add_button('Volver', URL('otra_pagina'))
+
     # Fields a mostrar en la grilla.
     fields = [Libro.titulo, Libro.autor, Libro.ubicacion, Libro.cantidad_disponible]
 
@@ -18,7 +20,6 @@ def administrar():
                         orderby=Libro.created_on,
                         ondelete=ondelete,
                         user_signature=False)
-
     return dict(grid=grid)
 
 

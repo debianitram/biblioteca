@@ -19,7 +19,7 @@ Persona.tipo.requires = IS_IN_SET(tipos)
 Persona.curso.requires = IS_NOT_EMPTY()
 
 # Movimientos
-estado_movimiento = {'1': 'Prestado', '2': 'Devuleto'}
+estado_movimiento = {'1': 'Prestado', '2': 'Devuelto'}
 Movimientos.estado.requires = IS_IN_SET(estado_movimiento)
 ### End Requires
 

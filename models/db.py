@@ -80,8 +80,8 @@ Persona = db.define_table('persona',
 
 
 Movimientos = db.define_table('movimientos',
-			Field('libro_id', 'reference libro'),
-			Field('persona_id', 'reference persona'),
+			Field('libro_id', 'reference libro', label='Libro'),
+			Field('persona_id', 'reference persona', label='Persona - Prestado a:'),
 			Field('cantidad', 'integer'),
 			Field('estado', 'list:string'),
 			auth.signature,
