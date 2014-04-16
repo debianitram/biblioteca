@@ -25,6 +25,9 @@ def administrar():
                         links=[lambda r: prestar_libro(r)],
                         user_signature=False)
 
+    # Cambiando la clase para el botón submit.
+    if grid.element('input', _type='submit'):
+        grid.element('input', _type='submit')['_class'] = 'btn btn-primary'
     return dict(grid=grid)
 
 
