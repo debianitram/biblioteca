@@ -46,7 +46,9 @@ Contenedor.contenedor_superior.writable = False
 # Libro
 Libro.cantidad_prestados.readable = False
 Libro.cantidad_prestados.writable = False
+Libro.cantidad_disponible.writable = False
 Libro.codsearch.readable = False
+
 
 # Persona
 Persona.codsearch.readable = False

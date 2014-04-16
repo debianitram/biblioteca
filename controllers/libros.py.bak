@@ -32,6 +32,7 @@ def administrar():
 
 
 def prestar():
+    from modal_FieldsReference import modalFieldReference as mf
 
     libro = Libro(request.vars.libro_id)
     response.view = 'biblioteca/libros_prestar.html'
@@ -92,20 +93,10 @@ def devolver():
             # Aqui hace el update en la tabla libros 
             # mas la sumatoria de cantidad_prestados
             cantidad_prestados = libro.cantidad_prestados - int(form.vars.cantidad)
-            cantidad_disponible = libro.cantidad_disponible + int(form.vars.cantidad)
-
-            libro.update_record(cantidad_prestados=cantidad_prestados,
-                                cantidad_disponible=cantidad_disponible)
-
+            libro.update_record(cantidad_prestados=cantidad_prestados)
             movimiento.update_record(cantidad=0, estado=2)
             session.flash='Se devolvió el total de los libros prestados.'
-
-            print 'Devolver la cantidad total'
-            print 'Resultado cantidad_prestados: %s' % cantidad_prestados
-            print 'Libro.cantidad_prestados: %s' % libro.cantidad_prestados
-            print 'Libro.cantidad_disponible: %s' % libro.cantidad_disponible
-            print '-' * 50
-
+            
         else:
             # Devolucion Parcial
             cantidad_prestados = libro.cantidad_prestados - int(form.vars.cantidad)
@@ -116,13 +107,6 @@ def devolver():
             cantidad = movimiento.cantidad - int(form.vars.cantidad)
             movimiento.update_record(cantidad=cantidad)
             session.flash='Se devolvió el libro con exito.'
-
-            print 'Devolver cantidad parcial'
-            print 'Resultado de cantidad_prestados: %s' % cantidad_prestados
-            print 'Resulatado Cantidad Disponible: %s ' % cantidad_disponible
-            print 'Libro.cantidad_prestados: %s' % libro.cantidad_prestados
-            print 'Libro.cantidad_disponible: %s ' % libro.cantidad_disponible
-            print '-' * 50
 
         db.commit()
         redirect(URL('default', 'index'))
