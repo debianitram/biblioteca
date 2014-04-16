@@ -63,7 +63,7 @@ def prestar():
 
 def devolver():
 
-    movimiento = Movimientos(request.vars.id)
+    movimiento = Movimientos(request.vars.id) or redirect(URL(c='default', f='index'))
     libro = Libro(movimiento.libro_id)
 
     form = SQLFORM.factory(
