@@ -68,35 +68,36 @@ def devolver():
 
     movimiento = Movimientos(request.vars.id) or redirect(URL(c='default', f='index'))
     libro = Libro(movimiento.libro_id)
+    response.view = 'biblioteca/libros_devolver.html'
 
     form = SQLFORM.factory(
-            Field('libro_id', default=movimiento.libro_id),
-            Field('persona_id', default=movimiento.persona_id),
             Field('cantidad',
-                    'list:string',
-                    requires=IS_IN_SET(range(1, movimiento.cantidad + 1)),
-                    label='Cantidad a Devolver'),
+                  'list:string',
+                  requires=IS_IN_SET(range(1, movimiento.cantidad + 1)),
+                  label='Cantidad a devolver'),
             )
 
-    if form.process().accepted:
-        if int(movimiento.cantidad) == int(form.vars.cantidad):
-            # Devolucion Total.
-            #Aqui hace el update en la tabla libros mas la sumatoria de cantidad_prestados
-            cantidad_prestados=int(libro.cantidad_prestados)-int(form.vars.cantidad)
+    if form.accepts(request.vars, session):
+
+        if movimiento.cantidad == int(form.vars.cantidad):
+            # Devolución Total.
+            # Aqui hace el update en la tabla libros 
+            # mas la sumatoria de cantidad_prestados
+            cantidad_prestados = libro.cantidad_prestados - int(form.vars.cantidad)
             libro.update_record(cantidad_prestados=cantidad_prestados)
             movimiento.update_record(cantidad=0, estado=2)
-            db.commit()
-            session.flash='Se devolvió con exito el total de los libros prestados.'
-            redirect(URL('default', 'index'))
+            session.flash='Se devolvió el total de los libros prestados.'
+            
         else:
             # Devolucion Parcial
-            cantidad_prestados=int(libro.cantidad_prestados)-int(form.vars.cantidad)
+            cantidad_prestados = libro.cantidad_prestados - int(form.vars.cantidad)
             libro.update_record(cantidad_prestados=cantidad_prestados)
             # Hace el update de la tabla movimiento.
-            cantidad=int(movimiento.cantidad)-int(form.vars.cantidad)
+            cantidad = movimiento.cantidad - int(form.vars.cantidad)
             movimiento.update_record(cantidad=cantidad)
-            db.commit()
             session.flash='Se devolvió el libro con exito.'
-            redirect(URL('default', 'index'))
 
-    return dict(form=form)
+        db.commit()
+        redirect(URL('default', 'index'))
+
+    return dict(form=form, datos=movimiento)

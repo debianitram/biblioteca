@@ -1,0 +1,58 @@
+{{extend 'layout.html'}}
+
+<div class="well">
+    <div class="page-header" id='inscripcion'>
+        <h1>Devolver Libro</h1>
+    </div>
+
+    <div class="container">
+        <div class="span4">
+            <table class='table table-bordered'>
+                <tbody>
+                    <tr class='alert alert-info'>
+                        <th colspan="2"><i class='icon-book'></i> Libro</th>
+                    </tr>
+                    <tr>
+                        <th>Título:</th>
+                        <td>{{=datos.libro_id.titulo}}</td>
+                    </tr>
+                    <tr>
+                        <th>Editorial:</th>
+                        <td>{{=datos.libro_id.editorial}}</td>
+                    </tr>
+                    <tr>
+                        <th>Ubicación</th>
+                        <td> {{=datos.libro_id.ubicacion.nombre}} [en] 
+                            {{=datos.libro_id.ubicacion.contenedor_superior.nombre}}
+                        </td>
+                
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="span4">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr class="alert-info">
+                        <th colspan="2"><i class='icon-user'></i> Persona</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre:</th>
+                        <td>{{=datos.persona_id.apellido}}, {{=datos.persona_id.nombre}}</td>
+                    </tr>
+                    <tr>
+                        <th>DNI:</th>
+                        <td>{{=datos.persona_id.dni}}</td>
+                    </tr>
+                    <tr>
+                        <th>Curso:</th>
+                        <td>{{=datos.persona_id.curso}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{=form}}
+
+</div>

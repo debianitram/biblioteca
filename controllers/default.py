@@ -3,18 +3,20 @@
 def index():
     if not session.inicio_sesion:
         response.flash = 'Bienvenido al Sistema Gestión de Biblioteca'
-        session.inicio_sesion = True    
+        session.inicio_sesion = True
     
+    query = Movimientos.estado == 'Prestado'
     fields = [Movimientos.libro_id,
               Movimientos.persona_id,
               Movimientos.cantidad,
               Movimientos.estado,
               Movimientos.created_on]
 
-    grid = SQLFORM.grid(Movimientos,
+    grid = SQLFORM.grid(query,
                         fields=fields,
                         deletable=False,
                         editable=False,
+                        details=False,
                         create=False,
                         csv=False,
                         links=[lambda r: devolver_libro(r)],
