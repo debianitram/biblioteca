@@ -45,8 +45,7 @@ def prestar_libro(row):
     return btn
 
 def devolver_libro(row):
-    """ Se muestra el botón Devolver en SQLFORM.grid
-         """
+    """ Se muestra el botón Devolver en SQLFORM.grid """
 
     btn = A(I(_class='icon-thumbs-up'), 
             ' Devolver',

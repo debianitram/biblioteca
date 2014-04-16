@@ -68,7 +68,7 @@ Libro.cantidad_disponible.represent = lambda v, r: SPAN(v, _class='badge')
 Movimientos.estado.represent = lambda v, r: SPAN(estado_movimiento.get(v[0]), \
                                                  _class='badge badge-important')
 Movimientos.cantidad.represent = lambda v, r: SPAN(v, _class='badge badge-info')
-Movimientos.created_on.represent = lambda v, r: SPAN(prettydate(v), \
+Movimientos.created_on.represent = lambda v, r: SPAN(prettydate(v, T), \
                                                     _class='badge badge-inverse',
                                                     _title=v)
 

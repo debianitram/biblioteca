@@ -32,14 +32,19 @@ def administrar():
 
 
 def prestar():
-    # from modal_FieldsReference import modalFieldsReference as modal
-    libro = Libro(request.vars.libro_id) or redirect(URL(c='libros', f='administrar'))
+    from modal_FieldsReference import modalFieldReference as mf
+
+    libro = Libro(request.vars.libro_id)
     response.view = 'biblioteca/libros_prestar.html'
     
     form = SQLFORM.factory(
             Field('persona',
                   'reference persona',
-                  requires=IS_IN_DB(db(Persona.id > 0), Persona.id)
+                  requires=IS_IN_DB(db(Persona.id > 0), Persona.id),
+                  widget=SQLFORM.widgets.autocomplete(request,
+                                                      Persona.codsearch,
+                                                      id_field=Persona.id,
+                                                      db=db(Persona.id > 0))
                   ),
             Field('cantidad', 
                   'list:string',
@@ -48,14 +53,18 @@ def prestar():
 
     if form.accepts(request.vars, session):
         # Lógica valores en la Base de datos
-        cantidad_prestados=int(libro.cantidad_prestados)+int(form.vars.cantidad)
-        libro.update_record(cantidad_prestados=cantidad_prestados)
+        cantidad_prestados = libro.cantidad_prestados + int(form.vars.cantidad)
+        cantidad_disponible = libro.cantidad_total - cantidad_prestados
+
+        libro.update_record(cantidad_prestados=cantidad_prestados,
+                            cantidad_disponible=cantidad_disponible)
         
         Movimientos.insert(libro_id=libro.id,
                            persona_id=form.vars.persona,
                            cantidad=int(form.vars.cantidad),
                            estado='1')
         db.commit()
+        session.flash = 'Se prestaron %s libro/s %s' % (form.vars.cantidad, libro.titulo)
         redirect(URL('default', 'index'))
 
     elif form.errors:
@@ -91,7 +100,9 @@ def devolver():
         else:
             # Devolucion Parcial
             cantidad_prestados = libro.cantidad_prestados - int(form.vars.cantidad)
-            libro.update_record(cantidad_prestados=cantidad_prestados)
+            cantidad_disponible = libro.cantidad_total - cantidad_prestados
+            libro.update_record(cantidad_prestados=cantidad_prestados,
+                                cantidad_disponible=cantidad_disponible)
             # Hace el update de la tabla movimiento.
             cantidad = movimiento.cantidad - int(form.vars.cantidad)
             movimiento.update_record(cantidad=cantidad)
@@ -99,5 +110,8 @@ def devolver():
 
         db.commit()
         redirect(URL('default', 'index'))
+
+    elif form.errors:
+        response.flash = 'Controle el formulario'
 
     return dict(form=form, datos=movimiento)

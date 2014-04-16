@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
+db = DAL('sqlite://storage.sqlite', pool_size=1, check_reserved=['all'])
 
 response.generic_patterns = ['*'] if request.is_local else []
 
@@ -52,7 +52,8 @@ Libro = db.define_table('libro',
 			Field('cantidad_prestados', 'integer', default=0),
 			Field('cantidad_disponible',
 				  'integer',
-				  compute=lambda r: r['cantidad_total'] - r['cantidad_prestados']),
+				  compute=lambda r: r['cantidad_total'] - r['cantidad_prestados'],
+				 ),
 			auth.signature,
 			common_filter=lambda q: db['libro'].is_active == True,
 			format='%(titulo)s'

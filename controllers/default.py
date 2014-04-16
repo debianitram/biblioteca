@@ -5,7 +5,9 @@ def index():
         response.flash = 'Bienvenido al Sistema Gestión de Biblioteca'
         session.inicio_sesion = True
     
-    query = Movimientos.estado == 'Prestado'
+    # Estados {1: 'Prestado', 2: 'Devuelto'}
+    query = Movimientos.estado == '1'
+
     fields = [Movimientos.libro_id,
               Movimientos.persona_id,
               Movimientos.cantidad,
@@ -20,8 +22,9 @@ def index():
                         create=False,
                         csv=False,
                         links=[lambda r: devolver_libro(r)],
-                        orderby=~Movimientos.created_on)
-        # Cambiando la clase para el botón submit.
+                        orderby=Movimientos.created_on)
+    
+    # Cambiando la clase para el botón submit.
     if grid.element('input', _type='submit'):
         grid.element('input', _type='submit')['_class'] = 'btn btn-primary'
     return dict(grid=grid)
