@@ -1,0 +1,53 @@
+{{extend 'layout.html'}}
+
+<div class="well">
+    <div class="page-header" id='movimientos'>
+        <h1>{{=title}}</h1>
+    </div>
+
+    {{if target == 'actions':}}
+        <div class="row">
+            <div class="span8 offset2">
+                <div class="span3">
+                    <div class="thumbnail">
+                        {{=IMG(_src=URL('static', 'images/users.png'),
+                               _class='img-circle')}}
+                        <div class="caption">
+                            <h3>Usuarios</h3>
+                            <p>Administre los usuarios del sistema</p>
+                            <p>
+                                {{=A('entrar',
+                                    _href=URL(c='default', 
+                                              f='admin', 
+                                              vars=dict(target='users')),
+                                    _class='btn btn-info')}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="span3">
+                    <div class="thumbnail">
+                        {{=IMG(_src=URL('static', 'images/key.png'),
+                               _class='img-circle')}}
+                        <div class="caption">
+                            <h3>Permisos</h3>
+                            <p>Asigne permiso a los usuarios</p>
+                            <p>
+                                {{=A('entrar',
+                                    _href=URL(c='default', 
+                                              f='admin', 
+                                              vars=dict(target='permission')),
+                                    _class='btn btn-info')}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {{else:}}
+        {{=grid}}
+    
+    {{pass}}
+
+</div>

@@ -21,7 +21,7 @@ def administrar():
                         fields=fields,
                         maxtextlength=45,
                         orderby=Libro.created_on,
-                        ondelete=ondelete,
+                        # ondelete=ondelete,
                         links=[lambda r: prestar_libro(r)],
                         user_signature=False)
 

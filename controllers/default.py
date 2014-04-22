@@ -30,6 +30,34 @@ def index():
     return dict(grid=grid)
 
 
+def admin():
+    target = request.vars.get('target', 'actions')
+
+    grid = None
+
+    if target == 'users':
+        title = 'Usuarios del Sistema'
+        response.flash = 'Administración de usuarios'
+        grid = SQLFORM.grid(db.auth_user,
+                            csv=False,
+                            ondelete=ondelete)
+
+    elif target == 'permission':
+        title = 'Asignar Permisos a Usuarios'
+        response.flash = 'Administración de permisos'
+        grid = SQLFORM.grid(db.auth_membership,
+                            csv=False,
+                            ondelete=ondelete)
+
+    elif target == 'actions':
+        title = 'Seleccione una acción'
+    else:
+        session.flash = 'Intento ingresar a un área restringida'
+        redirect(URL('index'))
+
+    return dict(title=title, target=target, grid=grid)
+
+
 def user():
     """
     exposes:

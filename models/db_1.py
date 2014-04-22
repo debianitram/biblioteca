@@ -75,3 +75,17 @@ Movimientos.created_on.represent = lambda v, r: SPAN(prettydate(v, T), \
                                                     _title=v)
 
 ################## End Represent
+
+
+################## Ondelete
+# Libro
+Libro.ubicacion.ondelete = 'RESTRICT'
+Libro.created_by.ondelete = 'RESTRICT'
+
+# Persona
+Persona.created_by.ondelete = 'RESTRICT'
+
+# Movimiento
+Movimientos.libro_id.ondelete = 'RESTRICT'
+Movimientos.persona_id.ondelete = 'RESTRICT'
+Movimientos.created_by.ondelete = 'RESTRICT'
