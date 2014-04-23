@@ -3,6 +3,8 @@ def index():
     redirect(URL(c='libros', f='administrar'))
     
 
+@auth.requires(auth.has_membership('gestion_libros') or \
+               auth.has_membership('administrador'))
 def administrar():
     """ Administración de los libros en la biblioteca - CRUD """
     response.view = 'biblioteca/libros_administrar.html'  # File view
@@ -13,8 +15,6 @@ def administrar():
               Libro.autor,
               Libro.ubicacion,
               Libro.cantidad_disponible]
-
-
 
     grid = SQLFORM.grid(query,
                         csv=False,
@@ -31,6 +31,8 @@ def administrar():
     return dict(grid=grid)
 
 
+@auth.requires(auth.has_membership('gestion_libros') or \
+               auth.has_membership('administrador'))
 def prestar():
 
     libro = Libro(request.vars.libro_id)
@@ -61,6 +63,7 @@ def prestar():
         Movimientos.insert(libro_id=libro.id,
                            persona_id=form.vars.persona,
                            cantidad=int(form.vars.cantidad),
+                           cantidad_total=int(form.vars.cantidad),
                            estado='1')
         db.commit()
         session.flash = 'Se prestaron %s libro/s %s' % (form.vars.cantidad, libro.titulo)
@@ -72,6 +75,8 @@ def prestar():
     return dict(form=form, libro=libro)
 
 
+@auth.requires(auth.has_membership('gestion_libros') or \
+               auth.has_membership('administrador'))
 def devolver():
 
     movimiento = Movimientos(request.vars.id) or redirect(URL(c='default', f='index'))
@@ -100,12 +105,6 @@ def devolver():
             movimiento.update_record(cantidad=0, estado=2)
             session.flash='Se devolvió el total de los libros prestados.'
 
-            print 'Devolver la cantidad total'
-            print 'Resultado cantidad_prestados: %s' % cantidad_prestados
-            print 'Libro.cantidad_prestados: %s' % libro.cantidad_prestados
-            print 'Libro.cantidad_disponible: %s' % libro.cantidad_disponible
-            print '-' * 50
-
         else:
             # Devolucion Parcial
             cantidad_prestados = libro.cantidad_prestados - int(form.vars.cantidad)
@@ -116,13 +115,6 @@ def devolver():
             cantidad = movimiento.cantidad - int(form.vars.cantidad)
             movimiento.update_record(cantidad=cantidad)
             session.flash='Se devolvió el libro con exito.'
-
-            print 'Devolver cantidad parcial'
-            print 'Resultado de cantidad_prestados: %s' % cantidad_prestados
-            print 'Resulatado Cantidad Disponible: %s ' % cantidad_disponible
-            print 'Libro.cantidad_prestados: %s' % libro.cantidad_prestados
-            print 'Libro.cantidad_disponible: %s ' % libro.cantidad_disponible
-            print '-' * 50
 
         db.commit()
         redirect(URL('default', 'index'))

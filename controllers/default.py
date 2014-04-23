@@ -30,6 +30,7 @@ def index():
     return dict(grid=grid)
 
 
+@auth.requires_membership('administrador')
 def admin():
     target = request.vars.get('target', 'actions')
 
@@ -37,17 +38,14 @@ def admin():
 
     if target == 'users':
         title = 'Usuarios del Sistema'
-        response.flash = 'Administración de usuarios'
         grid = SQLFORM.grid(db.auth_user,
                             csv=False,
-                            ondelete=ondelete)
+                            deletable=False)
 
     elif target == 'permission':
         title = 'Asignar Permisos a Usuarios'
-        response.flash = 'Administración de permisos'
         grid = SQLFORM.grid(db.auth_membership,
-                            csv=False,
-                            ondelete=ondelete)
+                            csv=False)
 
     elif target == 'actions':
         title = 'Seleccione una acción'

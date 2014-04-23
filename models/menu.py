@@ -55,7 +55,12 @@ def menu():
            False,
            URL(c='contenedores', f='administrar', vars=dict(tipo='seccion')))
           ]
-         )
+        ),
+        ### Btn Libros
+        (SPAN(I(_class='icon-asterisk icon-white'),
+              B(' Panel Admin'), _style='color:grey'),
+         False,
+         URL(c='default', f='admin')),
     ]
 
 if auth.user_id:

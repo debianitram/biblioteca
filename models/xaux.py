@@ -1,19 +1,36 @@
 # Definición de objetos o funciones auxiliares.
 # Settings de variables.
 
-etapa_desarrollo = True
+install = False
 
-if etapa_desarrollo:
-    # Si estamos en la etapa de desarrollo y no existen usuario, se crea uno.
+if not install:
+    # Si el sistema no está instalado y no existen usuario, se crea uno.
     if not db(db.auth_user.id > 0).count():
-        db.auth_user.validate_and_insert(first_name='etapa',
-                                         last_name='desarrollo',
-                                         email='test@test.com',
-                                         password='123qwe')
+        admin = db.auth_user.validate_and_insert(first_name='admin',
+                                                 last_name='admin',
+                                                 email='admin@admin.com',
+                                                 password='colmenalabs_0')
+
+    groups = [{'role': 'administrador',
+               'description': 'Acceso a todos los controles del Sistema'},
+              {'role': 'gestion_libros',
+               'description': 'Permiso para la gestión de los libros'},
+              {'role': 'gestion_personas',
+               'description': 'Permiso para la gestión de las personas'},
+              {'role': 'gestion_contenedores',
+               'description': 'Permiso para la gestión de contenedores'}]
+
+    if not db(db.auth_group.id > 0).count():
+        groups_list = db.auth_group.bulk_insert(groups)
+
+    if not db(db.auth_membership.id > 0).count():
+        db.auth_membership.insert(user_id=admin,
+                                  group_id=groups_list[0])
 
 
 def getContainerUp(key):
-    """ Retornar el nombre del Contenedor Superior.
+    """ 
+        Retornar el nombre del Contenedor Superior.
         key = id del contenedor superior 
     """
     name = Contenedor(key)['nombre']

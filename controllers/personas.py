@@ -2,9 +2,11 @@
 # Tipo de personas: Alumnos/Docentes/No Docentes
 
 def index():
-    return dict()
+    redirect(URL(c='personas', f='administrar'))
 
 
+@auth.requires(auth.has_membership('gestion_personas') or \
+               auth.has_membership('administrador'))
 def administrar():
     """ Administración de las personas - CRUD """
     response.view = 'biblioteca/personas_administrar.html'

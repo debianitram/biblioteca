@@ -1,6 +1,11 @@
 # Controlador que se encarga de manejar la lógica de los contenedores
 # Tipo de contenedores: Contenedor/Sección
+def index():
+    redirect(URL(c='contenedores', f='administrar'))
 
+
+@auth.requires(auth.has_membership('gestion_contenedores') or \
+               auth.has_membership('administrador'))
 def administrar():
     """ Administración de los contenedores/secciones - CRUD """
     response.view = 'biblioteca/contenedores_administrar.html'
